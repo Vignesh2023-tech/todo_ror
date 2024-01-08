@@ -1,5 +1,23 @@
 class Todo < ApplicationRecord
 
-    validates :title, presence: true
-    validates :description, presence: true
+  belongs_to :user
+
+  validates :title, presence: true
+
+  def self.over_due
+    all.where("due_date < ?", Date.today)
+  end
+
+  def self.due_today
+    all.where("due_date = ?", Date.today)
+  end
+
+  def self.due_later
+    all.where("due_date > ?", Date.today)
+  end
+
+  def self.completed
+    all.where(completed: true)
+  end
+
 end

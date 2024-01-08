@@ -1,0 +1,28 @@
+
+
+<% if flash[:notice]%>
+    <div class="alert alert-info" role="alert">
+        <%= flash[:notice]%>
+    </div>
+<% end%>
+
+<% if flash[:alert]%>
+    <div class="alert alert-danger" role="alert">
+        <%= flash[:alert].join(", ")%>
+    </div>
+<% end%>
+
+
+ <script>
+
+  function removeFlash() {
+    let notices = document.querySelectorAll(".alert");
+
+    notices.forEach(function(element) {
+      element.style.display = "none";
+    });
+
+  }
+
+  setTimeout(removeFlash, 3000);
+</script>

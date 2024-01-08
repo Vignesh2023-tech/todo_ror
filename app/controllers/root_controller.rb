@@ -8,22 +8,22 @@ class RootController < ApplicationController
     def create
         @todo = Todo.new
         @todo.title = params[:title]
-        @todo.description = params[:description]
+        @todo.due_date = params[:due_date]
+        @todo.user_id = current_user.id
         @todo.save
         redirect_to :action => 'index'
     end
 
+    # def update
+    #     @todo = Todo.find(params[:id])
+    #     #@todo.save
+    #     #redirect_to :action => 'index'
+    #     render 'update'
+    # end
+
     def update
         @todo = Todo.find(params[:id])
-        #@todo.save
-        #redirect_to :action => 'index'
-        render 'update'
-    end
-
-    def updateform
-        @todo = Todo.find(params[:id])
-        @todo.title = params[:title]
-        @todo.description = params[:description]
+        @todo.completed = params[:completed]
         @todo.save
         redirect_to :action => 'index'
     end

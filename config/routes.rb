@@ -10,12 +10,21 @@ Rails.application.routes.draw do
 
   get '/index', to: "root#index"
   root "root#index"
-
   post '/create', to: "root#create"
+  delete '/delete/:id', to: "root#delete"
+  put '/todos/:id', to: "root#update"
 
-  get '/delete/:id', to: "root#delete"
+    # User
+    get "/signup", to: "user#signup"
+    post "/signup", to: "user#create"
+    get "/profile", to: "user#profile"
+    post "/update", to: "user#update"
+    get "/password/reset", to: "user#password_reset_new"
+    post "/password/reset", to: "user#password_reset_create"
+    get "/password/reset/edit", to: "user#password_reset_edit"
+    post "/password/reset/update", to: "user#password_reset_update"
 
-  get '/update/:id', to: "root#update"
-  post '/updateform', to: "root#updateform"
-
+    get "/login", to: "user#login"
+    post "/login_user", to: "user#login_user"
+    get "/logout", to: "user#logout"
 end

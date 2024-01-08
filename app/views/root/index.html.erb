@@ -7,55 +7,128 @@
 
     <style>
 
-        .todo_container{
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            width: 15rem;
-            
-        }
+      .title {
+        text-align: center;
+      }
+      .todo-form {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 1rem;
+      }
 
-        .todo_container div{
-            margin-bottom: 1rem;
-            background-color: skyblue;
-            padding: 1rem;
-        }
+      .todo-container {
+        margin:0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .todo-container > div{
+        min-width: 25%;
+        max-width: 50%;
+        padding: 1rem;
+        border: 1px solid black;
+        border-radius: 13px;
+      }
+
+      .todo-list{
+          padding-bottom :1rem;
+      }
+
+      .todo-list div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        margin-left: 10%;
+      }
+
+      .todo-list div:hover .bxs-trash-alt {
+        display:block;
+      }
+
+      .bxs-trash-alt:hover {
+          color: red;
+      }
+
+      .todo-list_title {
+        font-size: 1.2rem;
+      }
+
+      .todo-list_duedate {
+        font-size: 14px;
+        font-weight: 300;
+        color: red;
+      }
 
     </style>
 </head>
 <body>
 
-    <h1>INDEX</h1>
-    <h2> Welcome</h2>
+<% if current_user != nil%>
 
-    <form method="POST" action="/create">
+  <form method="POST" action="/create" class="todo-form">
 
-        <%= token_tag %>
+  <%= token_tag %>
 
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title">
+  <label for="title">Title</label>
+  <input type="text" name="title" id="title">
 
-        <label for="description">Description</label>
-        <input type="text" name="description" id="description">
+  <label for="due_date">Due Date</label>
+  <input type="date" name="due_date" id="due_date">
 
-        <button type="submit">Create</button>
+  <button class="btn btn-primary" type="submit">Create</button>
 
-    </form>
+  </form>
 
-    <div class="todo_container">
+  <h2 class="title"> My Todos </h2>
 
-        <% @Todos.each {|t| %>
-            <div>
-                <h2><%= t.title %></h2>
-                <p><%= t.description%></p>
-                <a href="/update/<%= t.id%>"> Update</a>
-                <a href="/delete/<%= t.id%>"> Delete</a>
+  <section class="todo-container">
 
-            </div>
-        <%}%>
+    <div>
+
+      <%= render partial: "todo-section", locals: {
+        section_title: "OverDue",
+        todos: Todo.where(user_id: current_user).over_due,
+        show_due_date: true
+      } %>
+
+    <%= render partial: "todo-section", locals: {
+        section_title: "Due Today",
+        todos: Todo.where(user_id: current_user).due_today,
+        show_due_date: false
+      } %>
+
+    <%= render partial: "todo-section", locals: {
+        section_title: "Due Later",
+        todos: Todo.where(user_id: current_user).due_later,
+        show_due_date: true
+      } %>
 
     </div>
 
+  </section>
+
+<% else %>
+  <p> Please login </p>
+<%end%>
+
+<script>
+
+  let delete_btn = document.querySelectorAll('.bxs-trash-alt');
+
+  delete_btn.forEach(function (deletefn){
+    deletefn.addEventListener("click", function(){
+
+      let parent = this.closest("#delete_form").submit();
+    })
+  });
+
+</script>
 
 </body>
 </html>

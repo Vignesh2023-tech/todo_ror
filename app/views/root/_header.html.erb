@@ -1,0 +1,35 @@
+<style>
+  .navbar-brand {
+  font-family: cursive;
+  }
+
+  .login {
+  text-decoration: none;
+  }
+
+  .logout {
+  color: red;
+  text-decoration: none;
+  }
+
+  .name:hover .cont {
+  display: block;
+  }
+</style>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Todo Manager</a>
+    <% if current_user != nil%>
+      <a href="/profile" class="name"> <%= current_user.name%> </a>
+      <div class="cont" style="display:none;">
+        <a href="/profile">Profile</a>
+        <a href="/posts"> My Posts </a>
+      </div>
+      <a href="/logout" class="logout">Logout</a>
+    <% else %>
+      <a href="/login" class="login">Login</a>
+    <% end %>
+  </div>
+</div>
+</div>
+</nav>

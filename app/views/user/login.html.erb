@@ -1,0 +1,40 @@
+<form method="POST" action="/login_user" onsubmit=signin(event)>
+  <%= token_tag %>
+  <div class="col-6" style="margin: 0 auto;">
+    <h1> Login form</h1>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Enter a valid email address" aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8}"  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <div>
+      <a href="/password/reset/"> Forget Password? </a>
+    </div>
+    <div>
+      <a href="/signup"> Create a new account</a>
+    </div>
+  </div>
+</form>
+<script>
+  const signin = e => {
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    let email_pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    let password_pattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8}/;
+
+    if (email.length === 0 || !email_pattern.test(email)) {
+      alert("Please enter a valid email");
+      e.preventDefault();
+    }
+
+    if (password.length < 8 || !password_pattern.test(password)) {
+      alert("Please enter a valid password");
+      e.preventDefault();
+  }
+  }
+</script>
