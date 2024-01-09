@@ -71,17 +71,15 @@
 
 <% if current_user != nil%>
 
-  <form method="POST" action="/create" class="todo-form">
+  <form class="todo-form">
 
-  <%= token_tag %>
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title">
 
-  <label for="title">Title</label>
-  <input type="text" name="title" id="title">
+    <label for="due_date">Due Date</label>
+    <input type="date" name="due_date" id="due_date">
 
-  <label for="due_date">Due Date</label>
-  <input type="date" name="due_date" id="due_date">
-
-  <button class="btn btn-primary" type="submit">Create</button>
+    <button class="btn btn-primary" type="submit">Create</button>
 
   </form>
 
@@ -126,6 +124,33 @@
 
       let parent = this.closest("#delete_form").submit();
     })
+  });
+
+  const form = document.querySelector(".todo-form");
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    const title = document.getElementById("title").value;
+    const due_date = document.getElementById("due_date").value;
+    const user_id = <%= current_user.id %>;
+
+    fetch("/create", {
+      method: "POST",
+      body: JSON.stringify({
+        "user_id": user_id,
+        "title": title,
+        "due_date": due_date
+      }),
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(json =>{
+        console.log(json);
+        window.location.href= "/index";
+      })
+      .catch((error) => console.log(error));
+
   });
 
 </script>

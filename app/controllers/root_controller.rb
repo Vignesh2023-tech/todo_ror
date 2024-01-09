@@ -1,31 +1,30 @@
 class RootController < ApplicationController
 
+  skip_before_action :verify_authenticity_token
+
     def index
         @Todos = Todo.all
         render 'index'
     end
 
     def create
-        @todo = Todo.new
-        @todo.title = params[:title]
-        @todo.due_date = params[:due_date]
-        @todo.user_id = current_user.id
-        @todo.save
-        redirect_to :action => 'index'
-    end
+        title = params[:title]
+        due_date = params[:due_date]
+        user_id = params[:user_id]
 
-    # def update
-    #     @todo = Todo.find(params[:id])
-    #     #@todo.save
-    #     #redirect_to :action => 'index'
-    #     render 'update'
-    # end
+        @Todo = Todo.new(title: title, due_date:due_date, user_id: user_id)
+        if @Todo.save!
+          puts "Todo saved successfully#{@Todo}"
+        else
+          puts "Todo not saved successfully"
+        end
+    end
 
     def update
         @todo = Todo.find(params[:id])
         @todo.completed = params[:completed]
         @todo.save
-        redirect_to :action => 'index'
+        redirect_to :action => 'index', notice:"Todo updated sucessfully!"
     end
 
     def delete
