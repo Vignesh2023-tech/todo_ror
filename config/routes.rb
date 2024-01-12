@@ -9,22 +9,23 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   get '/index', to: "root#index"
+  get '/getdata', to: "root#getdata"
   root "root#index"
   post '/create', to: "root#create"
-  delete '/delete/:id', to: "root#delete"
-  put '/todos/:id', to: "root#update"
+  post '/delete/:id', to: "root#delete"
+  post '/todos/:id', to: "root#update"
 
-    # User
-    get "/signup", to: "user#signup"
-    post "/signup", to: "user#create"
-    get "/profile", to: "user#profile"
-    post "/update", to: "user#update"
-    get "/password/reset", to: "user#password_reset_new"
-    post "/password/reset", to: "user#password_reset_create"
-    get "/password/reset/edit", to: "user#password_reset_edit"
-    post "/password/reset/update", to: "user#password_reset_update"
+  # User
+  get "/signup", to: "user#signup"
+  post "/signup", to: "user#create"
+  get "/profile", to: "user#profile"
+  post "/update", to: "user#update"
+  get "/password/reset", to: "user#password_reset_new"
+  post "/password/reset", to: "user#password_reset_create"
+  get "/password/reset/edit", to: "user#password_reset_edit"
+  post "/password/reset/update", to: "user#password_reset_update"
 
-    get "/login", to: "user#login"
-    post "/login_user", to: "user#login_user"
-    get "/logout", to: "user#logout"
+  get "/login", to: "user#login"
+  post "/login_user", to: "user#login_user"
+  get "/logout", to: "user#logout"
 end

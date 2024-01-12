@@ -87,28 +87,6 @@
 
   <section class="todo-container">
 
-    <div>
-
-      <%= render partial: "todo-section", locals: {
-        section_title: "OverDue",
-        todos: Todo.where(user_id: current_user).over_due,
-        show_due_date: true
-      } %>
-
-    <%= render partial: "todo-section", locals: {
-        section_title: "Due Today",
-        todos: Todo.where(user_id: current_user).due_today,
-        show_due_date: false
-      } %>
-
-    <%= render partial: "todo-section", locals: {
-        section_title: "Due Later",
-        todos: Todo.where(user_id: current_user).due_later,
-        show_due_date: true
-      } %>
-
-    </div>
-
   </section>
 
 <% else %>
@@ -117,15 +95,86 @@
 
 <script>
 
-  let delete_btn = document.querySelectorAll('.bxs-trash-alt');
-
-  delete_btn.forEach(function (deletefn){
-    deletefn.addEventListener("click", function(){
-
-      let parent = this.closest("#delete_form").submit();
+  // fetching all todos data using fetch
+  fetch('/getdata')
+    .then(response => {
+      return response.json();
     })
-  });
+    .then(data => {
 
+      const todo_section =  document.querySelector('.todo-container');
+      let today = new Date().toJSON().slice(0, 10);
+
+      const overDue = data.filter(data => data.due_date < today);
+      const dueToday =  data.filter(data => data.due_date == today);
+      const dueLater =  data.filter(data => data.due_date > today);
+
+      const block =
+      `<div>
+        ${generateTodoSection("OverDue", overDue, true)}
+        ${generateTodoSection("OverDue", dueToday, false)}
+        ${generateTodoSection("OverDue", dueLater, true)}
+      </div>`;
+
+      function generateTodoSection(section_title, todos, showDueDate){
+        const completed_todos = todos.filter(todo => todo.completed == true);
+        let section = `
+        <div class="todo-list">
+          <h4>${section_title} - ${completed_todos.length} / ${todos.length}</h4>`;
+
+          for(i=0; i<todos.length; i++) {
+
+            section +=`
+            <div>
+            <form action="/todos/${todos[i].id}" method="post">
+              <input type="checkbox" class="status" name="completed" ${todos[i].completed == true ? "checked" : ""} onclick=this.form.submit()>
+            </form>`;
+
+            if (todos[i].completed == true){
+              section += `<s><p class="todo-list_title">${todos[i].title}</p></s>`;
+            } else {
+              section += `<p class="todo-list_title">${todos[i].title}</p>`;
+            }
+            if (showDueDate) {
+              section += `<p class="todo-list_duedate">${todos[i].due_date}</p>`;
+            }
+
+            section += `
+            <form action="/delete/${todos[i].id}" method="post" id="delete_form">
+              <i class='bx bxs-trash-alt'></i>
+            </form>
+            </div>`;
+          }
+          section +=
+        `</div>`;
+
+        return section;
+      };
+
+      todo_section.insertAdjacentHTML('beforeend', block);
+
+      // delete button function
+      let delete_btn = document.querySelectorAll("#delete_form");
+
+      delete_btn.forEach(function (deletefn){
+        deletefn.addEventListener("click", function(e){
+
+          if (confirm("Are you sure want to delete?") == true) {
+            this.closest("#delete_form").submit();
+          } else {
+            e.preventDefault;
+          }
+
+
+        })
+      });
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+  // creating a new todo using javascript fetch
   const form = document.querySelector(".todo-form");
 
   form.addEventListener("submit", function(e){
@@ -150,7 +199,6 @@
         window.location.href= "/index";
       })
       .catch((error) => console.log(error));
-
   });
 
 </script>
