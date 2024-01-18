@@ -68,3 +68,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'sass-rails'
+gem 'coffee-rails'
