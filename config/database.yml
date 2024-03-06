@@ -30,17 +30,17 @@ default: &default
   adapter: mysql2
   encoding: utf8
   username: root
-  password: mysql@#571
+  # password: mysql@#571
   host: 127.0.0.1
   port: 3306
 
 development:
   <<: *default
-  database: Todo
+  database: Todo_ror
 
-# test:
-#   <<: *default
-#   database: test_db_name
+test:
+  <<: *default
+  database: Todo_ror
 
 # production:
 #   <<: *default
