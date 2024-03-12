@@ -46,6 +46,8 @@ gem "bootsnap", require: false
 
 gem 'byebug', '~> 9.0', '>= 9.0.6'
 
+gem 'faker'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
@@ -53,6 +55,8 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   gem 'rspec-rails', '~> 5.0.0'
+  # gem 'factory_bot_rails'
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -70,4 +74,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'webmock', '~> 3.8'
+  gem "vcr"
 end

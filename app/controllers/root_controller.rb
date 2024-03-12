@@ -1,9 +1,5 @@
 class RootController < ApplicationController
-	before_action :validation_for_create, only: :create
 
-	before_action :check_due_date_is_valid, only: :create
-	before_action :check_user_id_is_exists, only: :create
-	
 	before_action :check_todo_id_is_valid, only: :update
 
 	def index
@@ -23,11 +19,11 @@ class RootController < ApplicationController
 		end
 
 		begin 
-			@todo.save
+			@todo.save!
 			render json: {message: "sucess"},status: 201
 			# redirect_to :action => 'index'
 		rescue StandardError => e
-			render json: {error: e}, status: 400
+			render json: {errors: e}, status: 400
 		end
 	end
 
@@ -56,12 +52,6 @@ class RootController < ApplicationController
 		redirect_to :action => 'index'
 	end
 
-	# validations
-	def validation_for_create
-		check_title_is_empty
-		check_due_date_is_empty
-		check_user_id_is_valid
-	end
 
 	def check_title_is_empty
 		begin
@@ -138,7 +128,6 @@ class RootController < ApplicationController
 			render json: {error: e}, status: 400
 		end
 	end
-
 
 
 end
